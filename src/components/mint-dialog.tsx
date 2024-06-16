@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { pinJSONToIPFS } from '@/lib/server-utils';
 import { MintData } from '@/lib/types';
 import Image from 'next/image';
 
@@ -23,7 +24,6 @@ export function ConfirmationModal({ mintData, cid }: ConfirmationModalProps) {
       </div>
       <DialogFooter>
         <Button type="button">Mint</Button>
-        {/* <Button onClick={() => setMintData(undefined)}>Cancel</Button> */}
       </DialogFooter>
     </DialogContent>
   );
