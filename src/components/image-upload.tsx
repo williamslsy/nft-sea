@@ -16,7 +16,7 @@ export default function ImageUpload({ onImageUpload, uploading }: ImageUploadPro
       >
         <HiUpload className="text-lg" />
         <span className="text-sm text-center opacity-50 font-bold leading-[1.2] self-stretch">Upload Image</span>
-        <div className="text-xs text-gray-400">Format Supported</div>
+        <div className="text-xs text-gray-400">Format Supported: jpg, png, jpeg</div>
         <input type="file" accept="image/*" onChange={onImageUpload} className="hidden" disabled={uploading} />
         {uploading ? <div className="mt-2 text-sm text-red-500">Uploading...</div> : <div className="mt-2 text-sm text-green-500">Ready to upload</div>}
       </Label>

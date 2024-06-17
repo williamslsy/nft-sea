@@ -1,45 +1,54 @@
 'use client';
-import { Button } from '@/components/ui/button';
+
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { RiWallet3Line } from 'react-icons/ri';
 import { TfiAngleRight } from 'react-icons/tfi';
-import { Sheet, SheetClose, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
+import { Button } from '@/components/ui/button';
+import { Sheet, SheetTrigger, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
+import { useConnect, Connector } from 'wagmi';
+import metamaskLogo from '../../public/wolf.svg';
+import coinbaseLogo from '../../public/coinbase-logo.svg';
+import walletConnectLogo from '../../public/wallet-connect-logo.svg';
 
-// Example connector objects, adjust according to actual implementation
-const Metamask = {
-  name: 'Metamask',
-  logo: '/wolf.svg', // Ensure you have this logo in your public directory
-  connect: () => console.log('Connecting to Metamask...'),
-};
-
-const CoinbaseWallet = {
-  name: 'Coinbase Wallet',
-  logo: '/coinbase-logo.svg', // Ensure you have this logo in your public directory
-  connect: () => console.log('Connecting to Coinbase Wallet...'),
-};
-
-const WalletConnect = {
-  name: 'WalletConnect',
-  logo: '/wallet-connect-logo.svg', // Ensure you have this logo in your public directory
-  connect: () => console.log('Connecting via WalletConnect...'),
-};
-
-const connectors = [Metamask, CoinbaseWallet, WalletConnect];
+interface WalletOptionsProps {
+  MetaMask: typeof metamaskLogo;
+  'Coinbase Wallet': typeof coinbaseLogo;
+  WalletConnect: typeof walletConnectLogo;
+}
 
 export function WalletOptions() {
-  const isWalletAvailable = (walletType: string): boolean => {
-    if (walletType === 'metamask') {
-      return typeof (window as any).ethereum !== 'undefined';
-    } else if (walletType === 'coinbase') {
-      return typeof (window as any).ethereum && (window as any).ethereum?.isCoinbaseWallet !== undefined;
-    } else {
-      return false; // Default to false for unknown wallet types
+  const { connect, connectors } = useConnect();
+  const logos: WalletOptionsProps = {
+    MetaMask: metamaskLogo,
+    'Coinbase Wallet': coinbaseLogo,
+    WalletConnect: walletConnectLogo,
+  };
+
+  const handleConnect = (connector: Connector) => {
+    try {
+      connect({ connector });
+    } catch (error) {
+      console.error('Failed to connect:', error instanceof Error ? error.message : String(error));
     }
   };
 
+  const [walletAvailability, setWalletAvailability] = useState<WalletOptionsProps | null>(null);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const availability = {
+        MetaMask: typeof (window as any).ethereum !== 'undefined' && (window as any).ethereum.isMetaMask === true,
+        'Coinbase Wallet': typeof (window as any).ethereum !== 'undefined' && (window as any).ethereum.isCoinbaseWallet === true,
+        WalletConnect: false, // WalletConnect does not install anything in the browser
+      };
+      setWalletAvailability(availability);
+    }
+  }, []);
+
   return (
     <Sheet>
-      <SheetTrigger>
+      <SheetTrigger asChild>
         <RiWallet3Line className="text-3xl text-white" />
       </SheetTrigger>
       <SheetContent className="bg-black border-0 p-4 text-white">
@@ -51,13 +60,13 @@ export function WalletOptions() {
             <Button
               key={index}
               className="flex items-center justify-between px-6 py-6 rounded-lg bg-[#282828] hover:bg-[#333333] cursor-pointer text-white transition-colors duration-200 ease-in-out"
-              onClick={connector.connect}
+              onClick={() => handleConnect(connector)}
             >
               <div className="flex items-center gap-4">
-                <Image src={connector.logo} height={20} width={20} alt={connector.name} className="h-9 w-9" />
+                <Image src={logos[connector.name as keyof WalletOptionsProps]} alt={connector.name} width={25} height={25} />
                 <span className="text-lg font-medium">{connector.name}</span>
               </div>
-              {isWalletAvailable(connector.name) && <p className="px-3 py-1 bg-blue-600 rounded-full text-xs font-medium">Installed</p>}
+              {walletAvailability && walletAvailability[connector.name as keyof WalletOptionsProps] && <p className="px-3 py-1 bg-blue-600 rounded-full text-xs font-medium">Installed</p>}
               <TfiAngleRight className="text-xl" />
             </Button>
           ))}

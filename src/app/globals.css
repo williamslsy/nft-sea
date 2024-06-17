@@ -96,7 +96,7 @@
     border-style: solid !important;
     border-width: 2px !important;
     border-image: repeating-linear-gradient(to right, #9e9e9e 0, #9e9e9e 10px, transparent 10px, transparent 20px) 1;
-    border-radius: 20px; /* Adjust the radius to your preference */
+    border-radius: 20px;
   }
   .gradient-bg {
     background: linear-gradient(to bottom, rgba(211, 189, 25, 0.116) 60%);

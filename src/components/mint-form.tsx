@@ -5,15 +5,10 @@ import { Button } from './ui/button';
 import { Textarea } from './ui/textarea';
 import { Input } from './ui/input';
 import ImageUpload from './image-upload';
-import { ConfirmationModal } from './mint-dialog';
+import { ConfirmationModal } from './confirmation-modal';
 import { Dialog, DialogTrigger } from './ui/dialog';
 import Files from './files';
-
-interface MintData {
-  image: File;
-  title: string;
-  description: string;
-}
+import { MintData } from '@/lib/types';
 
 function MintForm() {
   const [image, setImage] = useState<File | null>(null);
@@ -64,7 +59,7 @@ function MintForm() {
       pinataContent: {
         name: title,
         description: description,
-        image: `ipfs://${imageCID}`,
+        image: `${process.env.NEXT_PUBLIC_GATEWAY_URL}/ipfs/${imageCID}`,
         external_url: process.env.NEXT_PUBLIC_GATEWAY_URL,
       },
       pinataMetadata: {
@@ -85,16 +80,18 @@ function MintForm() {
     });
 
     const resData = await res.json();
-    console.log('Metadata pinned:', resData);
-    return resData.IpfsHash;
+    const metadataHash = resData.IpfsHash;
+    const metaUrl = `${process.env.NEXT_PUBLIC_GATEWAY_URL}/ipfs/${metadataHash}`;
+    console.log('Metadata pinned:', metaUrl);
+    return metaUrl;
   };
 
   const handleMint = async () => {
     if (image && title && description && cid) {
       const data = { image, title, description };
       setMintData(data);
-      const metadataIPFSHash = await pinJSONToIPFS(title, description, cid);
-      console.log(metadataIPFSHash);
+      const metaUrl = await pinJSONToIPFS(title, description, cid);
+      console.log(metaUrl);
     } else {
       alert('Please fill all fields and upload an image');
     }
@@ -113,7 +110,7 @@ function MintForm() {
               Mint and List Immediately
             </Button>
           </DialogTrigger>
-          {cid && mintData && <ConfirmationModal mintData={mintData} cid={cid} />}
+          {cid && mintData && <ConfirmationModal mintData={mintData} />}
         </Dialog>
       </div>
     </main>

@@ -1,5 +1,3 @@
-// app/api/files/route.ts
-
 import { NextRequest, NextResponse } from 'next/server';
 
 const keyRestrictions = {
@@ -42,11 +40,10 @@ export async function POST(request: NextRequest) {
     const json = await jwtResponse.json();
     const { JWT } = json;
 
-    // Send just the JWT token as a text response
     return new NextResponse(JWT, {
-      status: 200, // Explicitly set the status if needed
+      status: 200,
       headers: {
-        'Content-Type': 'text/plain', // Set the content type to text/plain
+        'Content-Type': 'text/plain',
       },
     });
   } catch (error: any) {
