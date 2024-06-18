@@ -12,9 +12,9 @@ import ImageUpload from './image-upload';
 import { ConfirmationModal } from './confirmation-modal';
 import { Dialog, DialogTrigger } from './ui/dialog';
 import { useImageUpload } from '@/hooks/useImageUpload';
-import { useMintNFT } from '@/hooks/useMintNFT';
 import { toast } from './ui/use-toast';
 import { MintData } from '@/lib/types';
+import { useMint } from '@/hooks/useMintNFT';
 
 export const formSchema = z.object({
   title: z.string().min(3, { message: 'Title must be at least 3 characters long' }),
@@ -38,7 +38,7 @@ function MintForm() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const { image, uploading, cid, resetUpload, handleImageUpload, uploadedImageUrl } = useImageUpload();
-  const { isConfirmed } = useMintNFT();
+  const { isConfirmed } = useMint();
 
   const onSubmit = (data: FormData) => {
     if (image && data.title && data.description && cid) {
@@ -83,7 +83,7 @@ function MintForm() {
                 Mint and List Immediately
               </Button>
             </DialogTrigger>
-            {cid && mintData && <ConfirmationModal mintData={mintData} />}
+            {cid && mintData && <ConfirmationModal mintData={mintData} setIsModalOpen={setIsModalOpen} reset={reset} />}
           </Dialog>
         </div>
       </form>

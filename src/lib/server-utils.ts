@@ -68,9 +68,9 @@ export const pinJSONToIPFS = async (title: string, description: string, imageCID
     console.log('Metadata pinned:', metadataUrl);
 
     toast({
-      title: 'Success',
-      description: 'Metadata pinned successfully!',
-      variant: 'success',
+      title: 'Info',
+      description: 'NFT metadata pinned!',
+      variant: 'info',
     });
 
     return metadataUrl;
