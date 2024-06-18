@@ -2,12 +2,21 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { MintData } from '@/lib/types';
 import Image from 'next/image';
+import { useState } from 'react';
 
 interface ConfirmationModalProps {
   mintData: MintData;
+  isPending: boolean;
+  onConfirmMint: () => void;
 }
 
-export function ConfirmationModal({ mintData }: ConfirmationModalProps) {
+export function ConfirmationModal({ mintData, isPending, onConfirmMint: handleConfirmMint }: ConfirmationModalProps) {
+  const [isMinting, setIsMinting] = useState(false);
+
+  const handleMint = () => {
+    setIsMinting(true);
+    handleConfirmMint();
+  };
   return (
     <DialogContent className="bg-black">
       <DialogHeader>
@@ -20,7 +29,9 @@ export function ConfirmationModal({ mintData }: ConfirmationModalProps) {
         <p className="text-sm">{mintData?.description}</p>
       </div>
       <DialogFooter>
-        <Button type="button">Mint</Button>
+        <Button type="button" onClick={handleMint} disabled={isMinting || isPending}>
+          {isPending || isMinting ? 'Confirming...' : 'Mint'}
+        </Button>
       </DialogFooter>
     </DialogContent>
   );

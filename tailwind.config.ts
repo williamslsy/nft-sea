@@ -15,7 +15,7 @@ const config = {
     extend: {
       fontFamily: {
         sans: ['Inter', 'sans-serif', 'Open Sans'],
-        serif: ['Cinzel', 'serif'],
+        cinzel: ['Cinzel', 'serif'],
       },
       colors: {
         inputBg: '#383838',

@@ -38,9 +38,9 @@ export function WalletOptions() {
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const availability = {
-        MetaMask: typeof (window as any).ethereum !== 'undefined' && (window as any).ethereum.isMetaMask === true,
-        'Coinbase Wallet': typeof (window as any).ethereum !== 'undefined' && (window as any).ethereum.isCoinbaseWallet === true,
-        WalletConnect: false, // WalletConnect does not install anything in the browser
+        MetaMask: false,
+        'Coinbase Wallet': false,
+        WalletConnect: false,
       };
       setWalletAvailability(availability);
     }

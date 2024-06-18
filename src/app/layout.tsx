@@ -5,6 +5,7 @@ import './globals.css';
 import Footer from '@/components/footer';
 import NavBar from '@/components/navbar';
 import { Web3Provider } from '@/context/wagmi-provider';
+import { Toaster } from '@/components/ui/toaster';
 
 const open_sans = Open_Sans({ subsets: ['latin'] });
 
@@ -28,6 +29,7 @@ export default function RootLayout({
             <Footer />
           </Web3Provider>
         </div>
+        <Toaster />
       </body>
     </html>
   );
