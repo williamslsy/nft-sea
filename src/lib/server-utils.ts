@@ -1,4 +1,4 @@
-import { GATEWAY_URL } from './utils';
+import { GATEWAY_URL } from './constants';
 
 export const uploadFile = async (fileToUpload: File): Promise<string> => {
   const jwtRes = await fetch('/api/files', { method: 'POST' });

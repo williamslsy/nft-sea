@@ -1,15 +1,15 @@
-'use client';
-
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { RiWallet3Line } from 'react-icons/ri';
 import { TfiAngleRight } from 'react-icons/tfi';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetTrigger, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
-import { useConnect, Connector } from 'wagmi';
+import { useConnect, Connector, useSwitchChain } from 'wagmi';
 import metamaskLogo from '../../public/wolf.svg';
 import coinbaseLogo from '../../public/coinbase-logo.svg';
 import walletConnectLogo from '../../public/wallet-connect-logo.svg';
+import { sepolia } from 'wagmi/chains';
+import { wagmiConfig } from '@/lib/config';
 
 interface WalletOptionsProps {
   MetaMask: typeof metamaskLogo;
@@ -17,13 +17,41 @@ interface WalletOptionsProps {
   WalletConnect: typeof walletConnectLogo;
 }
 
+const logos: WalletOptionsProps = {
+  MetaMask: metamaskLogo,
+  'Coinbase Wallet': coinbaseLogo,
+  WalletConnect: walletConnectLogo,
+};
+const walletPriority = ['MetaMask', 'Coinbase Wallet', 'WalletConnect'];
+
 export function WalletOptions() {
-  const { connect, connectors } = useConnect();
-  const logos: WalletOptionsProps = {
-    MetaMask: metamaskLogo,
-    'Coinbase Wallet': coinbaseLogo,
-    WalletConnect: walletConnectLogo,
-  };
+  const { chains, switchChain } = useSwitchChain();
+  const { connect, connectors, reset } = useConnect();
+  const [walletAvailability, setWalletAvailability] = useState({
+    MetaMask: false,
+    'Coinbase Wallet': false,
+    WalletConnect: false,
+  });
+
+  useEffect(() => {
+    reset();
+    if (typeof window !== 'undefined') {
+      setWalletAvailability({
+        MetaMask: Boolean(window.ethereum && window.ethereum.isMetaMask),
+        'Coinbase Wallet': false,
+        WalletConnect: false,
+      });
+    }
+  }, [reset]);
+
+  const [filteredConnectors, setFilteredConnectors] = useState<Connector[]>([]);
+
+  useEffect(() => {
+    const uniqueConnectors = connectors.filter((c, index, self) => index === self.findIndex((t) => t.id === c.id));
+
+    const sortedConnectors = uniqueConnectors.sort((a, b) => walletPriority.indexOf(a.name) - walletPriority.indexOf(b.name));
+    setFilteredConnectors(sortedConnectors);
+  }, [connectors]);
 
   const handleConnect = (connector: Connector) => {
     try {
@@ -33,41 +61,31 @@ export function WalletOptions() {
     }
   };
 
-  const [walletAvailability, setWalletAvailability] = useState<WalletOptionsProps | null>(null);
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const availability = {
-        MetaMask: false,
-        'Coinbase Wallet': false,
-        WalletConnect: false,
-      };
-      setWalletAvailability(availability);
-    }
-  }, []);
-
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <RiWallet3Line className="text-3xl text-white" />
+        <Button className="flex items-center gap-2" variant="cta">
+          <RiWallet3Line className="text-xl text-white" />
+          Connect Your Wallet{' '}
+        </Button>
       </SheetTrigger>
       <SheetContent className="bg-black border-0 p-4 text-white">
-        <SheetHeader className="mb-4">
-          <SheetTitle className="font-medium text-2xl text-white">Connect Your Wallet</SheetTitle>
+        <SheetHeader className="mb-6 text-left">
+          <SheetTitle className="font-medium text-white">Connect Your Wallet</SheetTitle>
         </SheetHeader>
         <div className="flex flex-col gap-4">
-          {connectors.map((connector, index) => (
+          {filteredConnectors.map((connector, index) => (
             <Button
               key={index}
-              className="flex items-center justify-between px-6 py-6 rounded-lg bg-[#282828] hover:bg-[#333333] cursor-pointer text-white transition-colors duration-200 ease-in-out"
+              className="flex items-center justify-between p-6 rounded-lg bg-[#282828] hover:bg-[#333333] cursor-pointer text-white transition-colors duration-200 ease-in-out w-72 mb-2"
               onClick={() => handleConnect(connector)}
             >
               <div className="flex items-center gap-4">
                 <Image src={logos[connector.name as keyof WalletOptionsProps]} alt={connector.name} width={25} height={25} />
                 <span className="text-lg font-medium">{connector.name}</span>
+                {walletAvailability[connector.name as keyof typeof walletAvailability] && <p className="px-3 py-1 bg-blue-600 rounded-full text-xs font-medium">Installed</p>}
               </div>
-              {walletAvailability && walletAvailability[connector.name as keyof WalletOptionsProps] && <p className="px-3 py-1 bg-blue-600 rounded-full text-xs font-medium">Installed</p>}
-              <TfiAngleRight className="text-xl" />
+              <TfiAngleRight className="text-sm" />
             </Button>
           ))}
         </div>

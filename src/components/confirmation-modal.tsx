@@ -10,12 +10,12 @@ interface ConfirmationModalProps {
   onConfirmMint: () => void;
 }
 
-export function ConfirmationModal({ mintData, isPending, onConfirmMint: handleConfirmMint }: ConfirmationModalProps) {
+export function ConfirmationModal({ mintData, isPending, onConfirmMint }: ConfirmationModalProps) {
   const [isMinting, setIsMinting] = useState(false);
 
   const handleMint = () => {
     setIsMinting(true);
-    handleConfirmMint();
+    onConfirmMint();
   };
   return (
     <DialogContent className="bg-black">
