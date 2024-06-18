@@ -27,7 +27,7 @@ export const useImageUpload = () => {
       };
 
       reader.readAsDataURL(file);
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error uploading file:', error);
       toast({ title: 'Error', description: 'Error uploading file', variant: 'destructive', duration: 5000 });
     } finally {
