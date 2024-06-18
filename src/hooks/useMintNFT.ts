@@ -1,4 +1,4 @@
-import { MintContext } from '@/context/mint-context';
+import { MintContext } from '@/context/mint-provider';
 import { useContext } from 'react';
 
 export const useMint = () => {
