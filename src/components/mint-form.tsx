@@ -13,6 +13,8 @@ import { ConfirmationModal } from './confirmation-modal';
 import { Dialog, DialogTrigger } from './ui/dialog';
 import { useImageUpload } from '@/hooks/useImageUpload';
 import { useMintNFT } from '@/hooks/useMintNFT';
+import { toast } from './ui/use-toast';
+import { MintData } from '@/lib/types';
 
 export const formSchema = z.object({
   title: z.string().min(3, { message: 'Title must be at least 3 characters long' }),
@@ -22,17 +24,21 @@ export const formSchema = z.object({
 export type FormData = z.infer<typeof formSchema>;
 
 function MintForm() {
-  const { address } = useAccount();
+  const { isConnected } = useAccount();
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(formSchema),
   });
+
+  const [mintData, setMintData] = useState<MintData | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { image, uploading, cid, uploadedImageUrl, handleImageUpload } = useImageUpload();
-  const { mintData, setMintData, isPending, handleConfirmMint, isConfirmed } = useMintNFT();
+
+  const { image, uploading, cid, resetUpload, handleImageUpload, uploadedImageUrl } = useImageUpload();
+  const { isConfirmed } = useMintNFT();
 
   const onSubmit = (data: FormData) => {
     if (image && data.title && data.description && cid) {
@@ -40,20 +46,22 @@ function MintForm() {
       setMintData(mintData);
       setIsModalOpen(true);
     } else {
-      alert('Please fill all fields and upload an image');
+      toast({ title: 'Error', description: 'Please fill out all fields and upload an image', variant: 'destructive', duration: 5000 });
     }
   };
 
   useEffect(() => {
     if (isConfirmed) {
       setIsModalOpen(false);
+      reset();
+      resetUpload();
     }
-  }, [isConfirmed]);
+  }, [isConfirmed, reset, resetUpload]);
 
   return (
     <main className="flex flex-col items-center flex-1 p-5">
       <form onSubmit={handleSubmit(onSubmit)} className="w-[544px] p-5 rounded-lg shadow-lg text-white">
-        <ImageUpload onImageUpload={handleImageUpload} uploading={uploading} isImageUploaded={!!cid} uploadedImageUrl={uploadedImageUrl} />
+        <ImageUpload onImageUpload={handleImageUpload} uploading={uploading} uploadedImageUrl={uploadedImageUrl} />
 
         <div className="my-4">
           <Input type="text" placeholder="NFT Title" className="block bg-inputBg" {...register('title')} />
@@ -71,11 +79,11 @@ function MintForm() {
           </Button>
           <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
             <DialogTrigger asChild>
-              <Button type="submit" disabled={uploading || !image || Object.keys(errors).length > 0} variant="cta" className="h-16 w-64">
+              <Button type="submit" disabled={!isConnected || uploading || !image || Object.keys(errors).length > 0} variant="cta" className="h-16 w-64">
                 Mint and List Immediately
               </Button>
             </DialogTrigger>
-            {cid && mintData && <ConfirmationModal mintData={mintData} isPending={isPending} onConfirmMint={() => handleConfirmMint(mintData.title, mintData.description, cid, address as string)} />}
+            {cid && mintData && <ConfirmationModal mintData={mintData} />}
           </Dialog>
         </div>
       </form>

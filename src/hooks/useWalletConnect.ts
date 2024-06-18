@@ -1,7 +1,14 @@
+import { useEffect, useState } from 'react';
 import { useAccount, useConnect } from 'wagmi';
 export default function useWalletConnect() {
   const { connect, connectors } = useConnect();
-  const { isConnected } = useAccount();
+  const { isConnected, address } = useAccount();
+
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const connectWallet = async () => {
     if (!isConnected) {
@@ -9,5 +16,5 @@ export default function useWalletConnect() {
     }
   };
 
-  return { connectWallet, isConnected };
+  return { connectWallet, isConnected, isMounted, address };
 }

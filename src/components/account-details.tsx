@@ -3,14 +3,10 @@ import React, { useEffect, useState } from 'react';
 import { formatEther } from 'viem';
 import { useAccount, useBalance } from 'wagmi';
 import { WalletOptions } from './wallet-options';
+import useWalletConnect from '@/hooks/useWalletConnect';
 
 function AccountDetails() {
-  const { address, isConnected } = useAccount();
-  const [isMounted, setIsMounted] = useState(false);
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
+  const { address, isConnected, isMounted } = useWalletConnect();
 
   const formatAddress = (address: string) => `${address.substring(0, 5)}...${address.substring(address.length - 4)}`;
   const { data: balanceData } = useBalance({
@@ -25,7 +21,7 @@ function AccountDetails() {
 
   return (
     <div>
-      {isConnected && address ? (
+      {isMounted && isConnected && address ? (
         <>
           <div className="text-white font-medium">
             {formatAddress(address)} | {balance} ETH

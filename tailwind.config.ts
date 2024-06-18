@@ -19,6 +19,8 @@ const config = {
       },
       colors: {
         inputBg: '#383838',
+        success: 'hsl(var(--success))',
+        info: 'hsl(var(--info))',
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',
@@ -52,6 +54,10 @@ const config = {
           DEFAULT: 'hsl(var(--card))',
           foreground: 'hsl(var(--card-foreground))',
         },
+      },
+      backgroundImage: {
+        gradientPrimary: 'linear-gradient(to right, #627EEA, #EC4467)',
+        gradientSecondary: 'linear-gradient(to left, #89F7FE, #66A6FF)',
       },
       borderRadius: {
         lg: 'var(--radius)',

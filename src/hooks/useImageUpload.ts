@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { uploadFile } from '@/lib/server-utils';
 import { toast } from '@/components/ui/use-toast';
 
@@ -17,10 +17,6 @@ export const useImageUpload = () => {
 
     try {
       const cid = await uploadFile(file);
-      toast({
-        title: 'Success',
-        description: 'Image Uploaded Successfully!',
-      });
       setCid(cid);
 
       const reader = new FileReader();
@@ -29,13 +25,20 @@ export const useImageUpload = () => {
           setUploadedImageUrl(e.target.result as string);
         }
       };
+
       reader.readAsDataURL(file);
     } catch (error: any) {
       console.error('Error uploading file:', error);
-      alert(error.message || 'Error uploading file');
+      toast({ title: 'Error', description: 'Error uploading file', variant: 'destructive', duration: 5000 });
     } finally {
       setUploading(false);
     }
+  };
+
+  const resetUpload = () => {
+    setImage(null);
+    setCid('');
+    setUploadedImageUrl('');
   };
 
   return {
@@ -44,5 +47,6 @@ export const useImageUpload = () => {
     cid,
     uploadedImageUrl,
     handleImageUpload,
+    resetUpload,
   };
 };

@@ -1,22 +1,26 @@
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { useImageUpload } from '@/hooks/useImageUpload';
+import { useMintNFT } from '@/hooks/useMintNFT';
+import useWalletConnect from '@/hooks/useWalletConnect';
 import { MintData } from '@/lib/types';
 import Image from 'next/image';
-import { useState } from 'react';
 
 interface ConfirmationModalProps {
   mintData: MintData;
-  isPending: boolean;
-  onConfirmMint: () => void;
 }
 
-export function ConfirmationModal({ mintData, isPending, onConfirmMint }: ConfirmationModalProps) {
-  const [isMinting, setIsMinting] = useState(false);
+export function ConfirmationModal({ mintData }: ConfirmationModalProps) {
+  const { isMinting, handleConfirmMint, isPending } = useMintNFT();
+  const { address } = useWalletConnect();
+  const { cid } = useImageUpload();
 
   const handleMint = () => {
-    setIsMinting(true);
-    onConfirmMint();
+    if (mintData) {
+      handleConfirmMint(mintData.title, mintData.description, cid, address as string);
+    }
   };
+
   return (
     <DialogContent className="bg-black">
       <DialogHeader>

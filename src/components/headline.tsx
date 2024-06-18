@@ -1,4 +1,6 @@
+'use client';
 import React from 'react';
+import ConnectCTA from './connect-cta';
 
 function HeadLine() {
   return (
@@ -8,6 +10,7 @@ function HeadLine() {
         Turn your imagination into reality. <br />
         Mint unique NFTs and join the thriving community of digital artists and collectors.
       </p>
+      <ConnectCTA />
     </div>
   );
 }

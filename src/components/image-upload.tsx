@@ -2,15 +2,15 @@ import { GoUpload } from 'react-icons/go';
 import { Label } from './ui/label';
 import { cn } from '@/lib/utils'; // Make sure to adjust the import path according to your project structure
 import Image from 'next/image';
+import { useImageUpload } from '@/hooks/useImageUpload';
 
 interface ImageUploadProps {
   onImageUpload: (event: React.ChangeEvent<HTMLInputElement>) => void;
   uploading: boolean;
-  isImageUploaded: boolean;
   uploadedImageUrl: string | null;
 }
-
-export default function ImageUpload({ onImageUpload, uploading, isImageUploaded, uploadedImageUrl }: ImageUploadProps) {
+export default function ImageUpload({ onImageUpload: handleImageUpload, uploading, uploadedImageUrl }: ImageUploadProps) {
+  const isImageUploaded = !!uploadedImageUrl;
   return (
     <div className="relative w-full">
       <Label
@@ -32,7 +32,7 @@ export default function ImageUpload({ onImageUpload, uploading, isImageUploaded,
             <div className="text-xs text-gray-400">JPEG, PNG, GIF, BMP, TIFF formats supported</div>
           </>
         )}
-        <input type="file" accept="image/jpeg,image/png,image/gif,image/bmp,image/tiff" onChange={onImageUpload} className="hidden" disabled={uploading} />
+        <input type="file" accept="image/jpeg,image/png,image/gif,image/bmp,image/tiff" onChange={handleImageUpload} className="hidden" disabled={uploading} />
         {uploading ? (
           <div className="mt-2 text-sm text-green-500">Uploading...</div>
         ) : isImageUploaded ? (
