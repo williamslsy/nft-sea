@@ -64,7 +64,7 @@ export function WalletOptions() {
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button className="flex items-center gap-2" variant="cta">
+        <Button className="flex items-center text-opacity-90 hover:text-opacity-100 gap-2 h-12 w-40" variant="cta">
           <RiWallet3Line className="text-xl text-white" />
           Connect Wallet{' '}
         </Button>
