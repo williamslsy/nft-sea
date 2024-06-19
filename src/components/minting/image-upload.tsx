@@ -1,8 +1,7 @@
 import { GoUpload } from 'react-icons/go';
-import { Label } from './ui/label';
+import { Label } from '../ui/label';
 import { cn } from '@/lib/utils'; // Make sure to adjust the import path according to your project structure
 import Image from 'next/image';
-import { useImageUpload } from '@/hooks/useImageUpload';
 
 interface ImageUploadProps {
   onImageUpload: (event: React.ChangeEvent<HTMLInputElement>) => void;

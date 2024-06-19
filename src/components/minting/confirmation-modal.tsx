@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import Image from 'next/image';
+
 import { Button } from '@/components/ui/button';
 import { DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+
 import { useImageUpload } from '@/hooks/useImageUpload';
 import useWalletConnect from '@/hooks/useWalletConnect';
-import { MintData } from '@/lib/types';
-import Image from 'next/image';
 import { useMint } from '@/hooks/useMintNFT';
+
+import { MintData } from '@/lib/types';
 
 interface ConfirmationModalProps {
   mintData: MintData;

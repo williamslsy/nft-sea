@@ -1,10 +1,13 @@
 'use client';
-import React, { createContext, useContext, useState, useEffect, ReactNode, useCallback } from 'react';
+import React, { createContext, useState, useEffect, ReactNode, useCallback } from 'react';
+
 import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi';
+
 import { contractConfig } from '@/lib/contractConfig';
 import { pinJSONToIPFS } from '@/lib/server-utils';
 import { toast } from '@/components/ui/use-toast';
 import useWalletConnect from '@/hooks/useWalletConnect';
+
 import { MintData } from '@/lib/types';
 
 interface MintContextType {

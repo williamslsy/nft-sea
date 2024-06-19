@@ -1,6 +1,6 @@
 import React from 'react';
 
-import AccountDetails from './account-details';
+import AccountDetails from '../account/account-details';
 import Logo from './logo';
 
 function NavBar() {

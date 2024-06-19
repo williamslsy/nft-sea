@@ -2,8 +2,8 @@ import type { Metadata } from 'next';
 import { Open_Sans } from 'next/font/google';
 import './globals.css';
 
-import Footer from '@/components/footer';
-import NavBar from '@/components/navbar';
+import Footer from '@/components/layout/footer';
+import NavBar from '@/components/layout/navbar';
 import { Web3Provider } from '@/context/wagmi-provider';
 import { Toaster } from '@/components/ui/toaster';
 

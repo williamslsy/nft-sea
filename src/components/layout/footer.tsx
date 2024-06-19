@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import React from 'react';
-import { Button } from './ui/button';
+import { Button } from '../ui/button';
 
 function Footer() {
   const currentYear = new Date().getFullYear();

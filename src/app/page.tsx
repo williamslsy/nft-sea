@@ -1,5 +1,5 @@
-import HeadLine from '@/components/headline';
-import MintForm from '@/components/mint-form';
+import HeadLine from '@/components/common/headline';
+import MintForm from '@/components/minting/mint-form';
 import { MintProvider } from '@/context/mint-provider';
 
 const MintNFTPage = () => {

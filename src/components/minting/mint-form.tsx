@@ -5,16 +5,19 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useAccount } from 'wagmi';
-import { Button } from './ui/button';
-import { Textarea } from './ui/textarea';
-import { Input } from './ui/input';
-import ImageUpload from './image-upload';
+
+import { Button } from '../ui/button';
+import { Textarea } from '../ui/textarea';
+import { Input } from '../ui/input';
+import { Dialog, DialogTrigger } from '../ui/dialog';
 import { ConfirmationModal } from './confirmation-modal';
-import { Dialog, DialogTrigger } from './ui/dialog';
+import ImageUpload from './image-upload';
+
 import { useImageUpload } from '@/hooks/useImageUpload';
-import { toast } from './ui/use-toast';
-import { MintData } from '@/lib/types';
 import { useMint } from '@/hooks/useMintNFT';
+
+import { toast } from '../ui/use-toast';
+import { MintData } from '@/lib/types';
 
 export const formSchema = z.object({
   title: z.string().min(3, { message: 'Title must be at least 3 characters long' }),

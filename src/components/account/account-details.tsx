@@ -1,7 +1,8 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+
 import { formatEther } from 'viem';
-import { useAccount, useBalance } from 'wagmi';
+import { useBalance } from 'wagmi';
+
 import { WalletOptions } from './wallet-options';
 import useWalletConnect from '@/hooks/useWalletConnect';
 

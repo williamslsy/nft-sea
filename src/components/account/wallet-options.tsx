@@ -1,14 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
+
 import { RiWallet3Line } from 'react-icons/ri';
 import { TfiAngleRight } from 'react-icons/tfi';
+
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetTrigger, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
+
 import { useConnect, Connector, useSwitchChain } from 'wagmi';
-import metamaskLogo from '../../public/wolf.svg';
-import coinbaseLogo from '../../public/coinbase-logo.svg';
-import walletConnectLogo from '../../public/wallet-connect-logo.svg';
 import { sepolia } from 'wagmi/chains';
+
+import metamaskLogo from '../../../public/wolf.svg';
+import coinbaseLogo from '../../../public/coinbase-logo.svg';
+import walletConnectLogo from '../../../public/wallet-connect-logo.svg';
+
 import { wagmiConfig } from '@/lib/config';
 
 interface WalletOptionsProps {
