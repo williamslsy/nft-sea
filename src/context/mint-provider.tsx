@@ -13,6 +13,7 @@ import { MintData } from '@/lib/types';
 interface MintContextType {
   mintData: MintData | null;
   setMintData: React.Dispatch<React.SetStateAction<MintData | null>>;
+  nftUrl: string;
   handleConfirmMint: (title: string, description: string, cid: string, address: string) => Promise<void>;
   isPending: boolean;
   isMinting: boolean;
@@ -29,6 +30,7 @@ export const MintProvider = ({ children }: { children: ReactNode }) => {
   const [isMinting, setIsMinting] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isConfirmed, setIsConfirmed] = useState(false);
+  const [nftUrl, setNftUrl] = useState('');
 
   const { data: hash, isPending, isError, error, writeContract } = useWriteContract();
   const { connectWallet, isConnected } = useWalletConnect();
@@ -43,6 +45,7 @@ export const MintProvider = ({ children }: { children: ReactNode }) => {
       try {
         setIsMinting(true);
         const metadataUrl = await pinJSONToIPFS(title, description, cid);
+        setNftUrl(metadataUrl);
         writeContract({
           ...contractConfig,
           functionName: 'mint',
@@ -85,5 +88,7 @@ export const MintProvider = ({ children }: { children: ReactNode }) => {
     }
   }, [hash, isConfirming, isSuccess, isError, error?.message]);
 
-  return <MintContext.Provider value={{ mintData, setMintData, handleConfirmMint, isPending, isMinting, isModalOpen, setIsModalOpen, isConfirmed, setIsConfirmed }}>{children}</MintContext.Provider>;
+  return (
+    <MintContext.Provider value={{ mintData, setMintData, nftUrl, handleConfirmMint, isPending, isMinting, isModalOpen, setIsModalOpen, isConfirmed, setIsConfirmed }}>{children}</MintContext.Provider>
+  );
 };

@@ -11,15 +11,15 @@ import { MintData } from '@/lib/types';
 
 interface ConfirmationModalProps {
   mintData: MintData;
+  cid: string;
 }
 
-export function ConfirmationModal({ mintData }: ConfirmationModalProps) {
+export function ConfirmationModal({ mintData, cid }: ConfirmationModalProps) {
   const { handleConfirmMint, isPending, isMinting, isConfirmed } = useMint();
   const { address } = useWalletConnect();
-  const { cid } = useImageUpload();
 
   const handleMint = () => {
-    if (mintData) {
+    if (mintData && address && cid) {
       handleConfirmMint(mintData.title, mintData.description, cid, address as string);
     }
   };

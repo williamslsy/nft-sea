@@ -69,7 +69,7 @@ export const pinJSONToIPFS = async (title: string, description: string, imageCID
 
     toast({
       title: 'Info',
-      description: 'NFT metadata pinned!',
+      description: 'NFT minting in progress. please wait...',
       variant: 'info',
     });
 

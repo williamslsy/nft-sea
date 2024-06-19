@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
-import { useAccount, useConnect } from 'wagmi';
+import { useAccount, useConnect, useDisconnect } from 'wagmi';
 export default function useWalletConnect() {
   const { connect, connectors } = useConnect();
   const { isConnected, address } = useAccount();
-
+  const { disconnect } = useDisconnect();
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
@@ -16,5 +16,5 @@ export default function useWalletConnect() {
     }
   };
 
-  return { connectWallet, isConnected, isMounted, address };
+  return { connectWallet, isConnected, isMounted, address, disconnect };
 }

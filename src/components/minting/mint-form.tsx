@@ -17,7 +17,6 @@ import { useImageUpload } from '@/hooks/useImageUpload';
 import { useMint } from '@/hooks/useMintNFT';
 
 import { toast } from '../ui/use-toast';
-import { MintData } from '@/lib/types';
 
 export const formSchema = z.object({
   title: z.string().min(3, { message: 'Title must be at least 3 characters long' }),
@@ -37,9 +36,8 @@ function MintForm() {
     resolver: zodResolver(formSchema),
   });
 
-  const [mintData, setMintData] = useState<MintData | null>(null);
   const { image, uploading, cid, resetUpload, handleImageUpload, uploadedImageUrl } = useImageUpload();
-  const { isConfirmed, setIsModalOpen, isModalOpen, setIsConfirmed, isMinting } = useMint();
+  const { mintData, setMintData, nftUrl, isConfirmed, setIsModalOpen, isModalOpen, setIsConfirmed, isMinting } = useMint();
 
   const onSubmit = (data: FormData) => {
     if (image && data.title && data.description && cid) {
@@ -90,10 +88,18 @@ function MintForm() {
                 Mint and List Immediately
               </Button>
             </DialogTrigger>
-            {cid && mintData && <ConfirmationModal mintData={mintData} />}
+            {cid && mintData && <ConfirmationModal mintData={mintData} cid={cid} />}
           </Dialog>
         </div>
       </form>
+      {/* uncomment to see nft */}
+      {/* {nftUrl && (
+        <Link href={nftUrl} target="_blank" rel="noopener noreferrer">
+          <Button className="h-12" variant="cta">
+            View NFT
+          </Button>
+        </Link>
+      )} */}
     </main>
   );
 }
