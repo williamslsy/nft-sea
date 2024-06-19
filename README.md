@@ -1,36 +1,95 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# NFT Sea
 
-## Getting Started
+## Overview
 
-First, run the development server:
+**The Task**: As a user, I want to be able to connect my wallet to an application and mint a new NFT.
+
+## Scope of Work:
+
+- **Create Page for Minting NFT**:
+  - Include inputs for title, description, and image.
+  - Implement functionality to upload an image from local storage and store it in decentralized storage (IPFS).
+  - Use the [OpenSea Metadata Standards](https://docs.opensea.io/docs/metadata-standards) to create a standardized JSON object and store it in decentralized storage.
+- **Create Service Call to Contracts**:
+  - Use Wagmi integration to call the minting function.
+- **Implementation of Figma Design**:
+  - Ensure the application layout and components are consistent with the provided Figma design.
+
+### Getting Started
+
+#### Clone the Repository
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/williamslsy/nft-sea.git
+cd nft-sea
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+#### Install Dependencies and Run the Development Server
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+yarn && yarn dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+**The .env variables required to run the app**
 
-## Learn More
+```bash
+PINATA_JWT=
+NEXT_PUBLIC_GATEWAY_URL=
+NEXT_PUBLIC_PROJECT_ID=
+NEXT_PUBLIC_NFT_ADDRESS=
+```
 
-To learn more about Next.js, take a look at the following resources:
+The app should now be up and running.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Application Flow:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+**To mint a new NFT**
 
-## Deploy on Vercel
+1. Connect your wallet using the wallet options provided.
+2. Upload an image, fill in the NFT title, description.
+3. Confirm mint details
+4. Submit to initiate the minting process.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Tools and Technologies Used
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- **Shadcn-UI**: Consistent UI components and application layout.
+- **TypeScript**: Type safety, better code quality, and fewer runtime errors.
+- **TailwindCSS**: Atomic design, custom styling, and responsive design.
+- **Next.js**: Efficient data fetching and performance through static site generation and server side rendering.
+- **React Hooks and Custom Hooks**: State management and code modularity.
+- **Wagmi**: Wallet connection and smart contract interactions for Ethereum.
+- **Toast Notifications**: Real-time user feedback on actions.
+- **Context API**: Managing complex state and improving state management predictability and efficiency.
+
+### Structure
+
+- **Mint Form Component (`mint-form.tsx`)**: Handles user input for NFT details and image upload, managing the form submission and validation.
+- **Confirmation Modal (`confirmation-modal.tsx`)**: Displays the details before confirming the minting process, ensuring the user can review and confirm their submission.
+- **Mint Context (`context/mint-provider.tsx`)**: Contains all functionalities and callback functions, managing the state and logic of the minting process, including interactions with the blockchain and IPFS.
+- **API Route (`app/api/files/route.ts`)**: Handles the generation of JWT for secure communication with the Pinata API, ensuring that only authorized uploads are allowed.
+
+- **Custom Hook (`useImageUpload.ts`)**: Manages the image upload process, including state management for the upload status and handling the communication with IPFS.
+- **Custom Hook (`useMintNFT.ts`)**: Manages the minting process, including state management for the minting status and handling interactions with the smart contract using Wagmi.
+
+- **Utility Functions (`lib/server-utils.ts`)**: Contains server call functions for saving data and checking processing status, including interactions with Pinata for storing images and metadata.
+
+This structure ensures that each part of the application is modular and maintains a clear separation of concerns, promoting maintainability and scalability.
+
+### Ensuring a Performant UI with Emphasis on a Friendly UX
+
+1. **React Hooks and Custom Hooks**:
+
+   - Leveraged React hooks for state management and custom hooks for encapsulating logic.
+
+2. **Memoized Callback Functions**:
+
+   - Used `useCallback` to memoize functions, reducing unnecessary re-renders and enhancing performance.
+
+3. **Error Handling and User Feedback**:
+   - Implemented toast notifications for error, progress, and success states, providing immediate feedback to users.
+
+#### Challenges Faced
+
+- **Pinata Setup**: Initially struggled with the setup process for Pinata. Found the following resource helpful for configuring the signed JWT for IPFS uploads: [Pinata Guide](https://www.pinata.cloud/blog/how-to-upload-to-ipfs-from-the-frontend-with-signed-jwts/).
+
+##### I'm eager to receive feedback on this. Please leave comments on areas for improvement. Thank you.
