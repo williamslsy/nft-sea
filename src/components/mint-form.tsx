@@ -35,10 +35,8 @@ function MintForm() {
   });
 
   const [mintData, setMintData] = useState<MintData | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
   const { image, uploading, cid, resetUpload, handleImageUpload, uploadedImageUrl } = useImageUpload();
-  const { isConfirmed } = useMint();
+  const { isConfirmed, setIsModalOpen, isModalOpen, setIsConfirmed } = useMint();
 
   const onSubmit = (data: FormData) => {
     if (image && data.title && data.description && cid) {
@@ -52,11 +50,11 @@ function MintForm() {
 
   useEffect(() => {
     if (isConfirmed) {
-      setIsModalOpen(false);
       reset();
       resetUpload();
+      setIsConfirmed(false);
     }
-  }, [isConfirmed, reset, resetUpload]);
+  }, [isConfirmed, reset, resetUpload, setIsConfirmed]);
 
   return (
     <main className="flex flex-col items-center flex-1 p-5">
@@ -83,7 +81,7 @@ function MintForm() {
                 Mint and List Immediately
               </Button>
             </DialogTrigger>
-            {cid && mintData && <ConfirmationModal mintData={mintData} setIsModalOpen={setIsModalOpen} reset={reset} />}
+            {cid && mintData && <ConfirmationModal mintData={mintData} />}
           </Dialog>
         </div>
       </form>

@@ -21,7 +21,7 @@ export default function ImageUpload({ onImageUpload: handleImageUpload, uploadin
       >
         {uploadedImageUrl ? (
           <div className="flex flex-col items-center gap-2">
-            <Image src={uploadedImageUrl} alt="Uploaded" className="h-24 w-24 object-contain rounded-md" width={20} height={20} />
+            <Image src={uploadedImageUrl} alt="Uploaded" className="h-24 w-auto object-contain rounded-md" width={20} height={20} />
           </div>
         ) : (
           <>
