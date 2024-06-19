@@ -81,7 +81,7 @@ export const MintProvider = ({ children }: { children: ReactNode }) => {
       toast({ title: 'Pending', description: 'Your transaction is processing. Please wait for confirmation...', variant: 'info' });
     }
     if (isSuccess) {
-      toast({ title: 'Confirmed', description: 'Transaction confirmed: Your NFT has been minted', variant: 'success' });
+      toast({ title: 'Confirmed', description: 'Transaction confirmed: Your NFT has been minted, View NFT', variant: 'success' });
       setIsMinting(false);
       setIsModalOpen(false);
       setIsConfirmed(true);

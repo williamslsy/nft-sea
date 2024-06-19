@@ -41,6 +41,8 @@ NEXT_PUBLIC_NFT_ADDRESS=
 
 The app should now be up and running.
 
+Here's the [Link to the Build](https://nft-sea-delta.vercel.app/).
+
 ## Application Flow:
 
 **To mint a new NFT**
@@ -67,6 +69,7 @@ The app should now be up and running.
 - **Confirmation Modal (`confirmation-modal.tsx`)**: Displays the details before confirming the minting process, ensuring the user can review and confirm their submission.
 - **Mint Context (`context/mint-provider.tsx`)**: Contains all functionalities and callback functions, managing the state and logic of the minting process, including interactions with the blockchain and IPFS.
 - **API Route (`app/api/files/route.ts`)**: Handles the generation of JWT for secure communication with the Pinata API, ensuring that only authorized uploads are allowed.
+- **Wallet Options(`wallet-options.tsx`)**: Provides wallet connection options.
 
 - **Custom Hook (`useImageUpload.ts`)**: Manages the image upload process, including state management for the upload status and handling the communication with IPFS.
 - **Custom Hook (`useMintNFT.ts`)**: Manages the minting process, including state management for the minting status and handling interactions with the smart contract using Wagmi.
@@ -86,7 +89,15 @@ This structure ensures that each part of the application is modular and maintain
    - Used `useCallback` to memoize functions, reducing unnecessary re-renders and enhancing performance.
 
 3. **Error Handling and User Feedback**:
+
    - Implemented toast notifications for error, progress, and success states, providing immediate feedback to users.
+
+4. **Conditional Link for Viewing Minted NFT**:
+
+   - A link to view the minted NFT is conditionally rendered based on the nftUrl. If the minting process is successful, a "View NFT" button appears, allowing users to view their newly minted NFT.
+
+5. **Mobile Responsiveness**
+   - The application is designed to be mobile-friendly, with adjustments to layout and styles to ensure a seamless experience on smaller screens.
 
 #### Challenges Faced
 

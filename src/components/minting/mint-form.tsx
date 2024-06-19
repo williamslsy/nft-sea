@@ -17,6 +17,7 @@ import { useImageUpload } from '@/hooks/useImageUpload';
 import { useMint } from '@/hooks/useMintNFT';
 
 import { toast } from '../ui/use-toast';
+import Link from 'next/link';
 
 export const formSchema = z.object({
   title: z.string().min(3, { message: 'Title must be at least 3 characters long' }),
@@ -93,13 +94,13 @@ function MintForm() {
         </div>
       </form>
       {/* uncomment to see nft */}
-      {/* {nftUrl && (
+      {nftUrl && (
         <Link href={nftUrl} target="_blank" rel="noopener noreferrer">
           <Button className="h-12" variant="cta">
             View NFT
           </Button>
         </Link>
-      )} */}
+      )}
     </main>
   );
 }
