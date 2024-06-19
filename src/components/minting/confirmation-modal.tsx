@@ -25,7 +25,7 @@ export function ConfirmationModal({ mintData }: ConfirmationModalProps) {
   };
 
   return (
-    <DialogContent className="bg-black border-gray-400">
+    <DialogContent className="bg-black border-gray-400 rounded-lg">
       <DialogHeader>
         <DialogTitle className="text-white">Confirm Your Mint</DialogTitle>
         <DialogDescription>Review the information before confirming</DialogDescription>
@@ -36,9 +36,11 @@ export function ConfirmationModal({ mintData }: ConfirmationModalProps) {
         <p className="text-sm text-gray-400">{mintData?.description}</p>
       </div>
       <DialogFooter>
-        <Button type="button" onClick={handleMint} disabled={isMinting || isPending} variant="cta" className="mx-auto h-16 w-40">
-          {isPending || isMinting ? 'Confirming...' : 'Continue'}
-        </Button>
+        <div className="w-full flex justify-center">
+          <Button type="button" onClick={handleMint} disabled={isMinting || isPending} variant="cta" className="h-16 w-40">
+            {isPending || isMinting ? 'Confirming...' : 'Continue'}
+          </Button>
+        </div>
       </DialogFooter>
     </DialogContent>
   );

@@ -23,11 +23,9 @@ function AccountDetails() {
   return (
     <div>
       {isMounted && isConnected && address ? (
-        <>
-          <div className="text-white font-medium">
-            {formatAddress(address)} | {balance} ETH
-          </div>
-        </>
+        <div className="text-white font-medium text-sm md:text-base">
+          {formatAddress(address)} | {balance} ETH
+        </div>
       ) : (
         <WalletOptions />
       )}

@@ -39,7 +39,7 @@ function MintForm() {
 
   const [mintData, setMintData] = useState<MintData | null>(null);
   const { image, uploading, cid, resetUpload, handleImageUpload, uploadedImageUrl } = useImageUpload();
-  const { isConfirmed, setIsModalOpen, isModalOpen, setIsConfirmed } = useMint();
+  const { isConfirmed, setIsModalOpen, isModalOpen, setIsConfirmed, isMinting } = useMint();
 
   const onSubmit = (data: FormData) => {
     if (image && data.title && data.description && cid) {
@@ -59,13 +59,19 @@ function MintForm() {
     }
   }, [isConfirmed, reset, resetUpload, setIsConfirmed]);
 
+  const handleOpenChange = (isOpen: boolean) => {
+    if (!isMinting) {
+      setIsModalOpen(isOpen);
+    }
+  };
+
   return (
     <main className="flex flex-col items-center flex-1 p-5">
-      <form onSubmit={handleSubmit(onSubmit)} className="w-[544px] p-5 rounded-lg shadow-lg text-white">
+      <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-lg p-5 rounded-lg shadow-lg text-white">
         <ImageUpload onImageUpload={handleImageUpload} uploading={uploading} uploadedImageUrl={uploadedImageUrl} />
 
         <div className="my-4">
-          <Input type="text" placeholder="NFT Title" className="block bg-inputBg" {...register('title')} />
+          <Input type="text" placeholder="NFT Title" className="block w-full bg-inputBg" {...register('title')} />
           {errors.title && <span className="text-red-500 text-sm">{errors.title.message}</span>}
         </div>
 
@@ -74,13 +80,13 @@ function MintForm() {
           {errors.description && <span className="text-red-500 text-sm">{errors.description.message}</span>}
         </div>
 
-        <div className="flex gap-4">
-          <Button type="button" disabled className="h-16 w-64">
+        <div className="flex flex-col sm:flex-row gap-4">
+          <Button type="button" disabled className="h-16 w-full sm:w-64">
             Mint without listing
           </Button>
-          <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+          <Dialog open={isModalOpen} onOpenChange={handleOpenChange}>
             <DialogTrigger asChild>
-              <Button type="submit" disabled={!isConnected || uploading || !image || Object.keys(errors).length > 0} variant="cta" className="h-16 w-64">
+              <Button type="submit" disabled={!isConnected || uploading || !image || Object.keys(errors).length > 0} variant="cta" className="h-16 w-full sm:w-64">
                 Mint and List Immediately
               </Button>
             </DialogTrigger>
