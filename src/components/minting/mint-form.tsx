@@ -96,7 +96,7 @@ function MintForm() {
       {/* uncomment to see nft */}
       {nftUrl && (
         <Link href={nftUrl} target="_blank" rel="noopener noreferrer">
-          <Button className="h-12" variant="cta">
+          <Button className="h-12 mt-4" variant="cta">
             View NFT
           </Button>
         </Link>
