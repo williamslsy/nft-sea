@@ -80,8 +80,9 @@
     height: 100%;
     margin: 0;
     padding: 0;
-    background: url('/Minting.png') no-repeat center center;
+    /* background: url('/Minting.png') no-repeat center center; */
     background-size: cover;
+    background: linear-gradient(135deg, #2b1d3c, #301e3d, #34302e, #24392b, #3d2929);
   }
 }
 @layer utilities {
